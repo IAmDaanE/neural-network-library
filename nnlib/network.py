@@ -118,7 +118,7 @@ class Network:
         self.layers.append(layer)
 
     def forward(self, inputs):
-        self.epochs += 1
+        self.epoch += 1
         output = inputs
         for layer in self.layers:
             output = layer.forward(output)
