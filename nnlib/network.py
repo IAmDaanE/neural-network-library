@@ -39,7 +39,7 @@ class Layer:
     def forward(self, inputs):
         self.cached_inputs = inputs
         self.pre_activation = inputs @ self.weights + self.biases
-        return Activations().self.activation(self.pre_activation)
+        return self.activation(self.pre_activation)
 
     def backward(self, incoming_gradient):
         activation_gradient = Activations().gradient_map[self.activation](self.pre_activation)
