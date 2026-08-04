@@ -153,7 +153,7 @@ class Network:
             end_x = hor_side_offset + hor_gap * (self.hidden_amount + 1)
             start_y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + q * node_gap
             for p in range(self.output_size):
-                weight = self.layers[self.hidden_amount + 1].weights[q, p]
+                weight = self.layers[self.hidden_amount].weights[q, p]
                 if weight > 0:
                     color = (255, 255, 255)
                 else:
