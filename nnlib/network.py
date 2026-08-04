@@ -121,7 +121,7 @@ class Network:
         for i in range(self.output_size):
             y = self.window_height / 2 - node_gap * (self.output_size / 2) + i * node_gap
             pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset + (self.hidden_amount + 1) * hor_gap, y), node_radius, 3)
-        for q in range(self.hidden_amount - 1):
+        for q in range(self.hidden_amount):
             if q == 0:
                 start_x = hor_side_offset
                 end_x = hor_side_offset + hor_gap
