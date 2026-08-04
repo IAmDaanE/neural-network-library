@@ -2,33 +2,40 @@ import numpy as np
 import pygame
 
 class Activations:
+    @staticmethod
     def relu(x):
         return np.maximum(0, x)
 
+    @staticmethod
     def relu_grad(x):
         return (x > 0).astype(float)
 
+    @staticmethod
     def linear(x):
         return x
 
+    @staticmethod
     def linear_grad(x):
         return np.ones_like(x)
 
     gradient_map = {
-        relu: relu_grad,
-        linear: linear_grad,
+        relu.__func__: relu_grad.__func__,
+        linear.__func__: linear_grad.__func__,
     }
 
 class Losses:
+    @staticmethod
     def mse(prediction, true_value):
         return np.mean((prediction - true_value) ** 2)
     
+    @staticmethod
     def mse_grad(prediction, true_value):
         return 2 * (prediction - true_value) / prediction.size
 
     gradient_map = {
-        mse: mse_grad
+        mse.__func__: mse_grad.__func__
     }
+
 
 class Layer:
     def __init__(self, n_in, n_out, activation):
@@ -81,7 +88,7 @@ class Network:
         return output
 
     def backward(self, prediction, true_value):
-        gradient = Activations().gradient_map[self.loss_function](prediction, true_value)
+        gradient = Losses().gradient_map[self.loss_function](prediction, true_value)
         for layer in reversed(self.layers):
             gradient = layer.backward(gradient)
 
