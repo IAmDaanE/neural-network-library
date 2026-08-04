@@ -18,9 +18,19 @@ class Activations:
     def linear_grad(x):
         return np.ones_like(x)
 
+    @staticmethod
+    def sigmoid(x):
+        return 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+
+    @staticmethod
+    def sigmoid_grad(x):
+        s = 1 / (1 + np.exp(-np.clip(x, -500, 500)))
+        return s * (1.0 - s)
+
     gradient_map = {
         relu.__func__: relu_grad.__func__,
         linear.__func__: linear_grad.__func__,
+        sigmoid.__func__: sigmoid_grad.__func__
     }
 
 class Losses:
@@ -32,8 +42,19 @@ class Losses:
     def mse_grad(prediction, true_value):
         return 2 * (prediction - true_value) / prediction.size
 
+    @staticmethod
+    def cross_entropy(prediction, true_value):
+        prediction = np.clip(prediction, 1e-15, 1.0 - 1.0e-15)
+        return -np.sum(true_value * np.log(prediction)) / prediction.shape[0]
+    
+    @staticmethod
+    def cross_entropy_grad(prediction, true_value):
+        prediction = np.clip(prediction, 1e-15, 1.0 - 1.0e-15)
+        return (-true_value / prediction) / prediction.shape[0]
+
     gradient_map = {
-        mse.__func__: mse_grad.__func__
+        mse.__func__: mse_grad.__func__,
+        cross_entropy.__func__: cross_entropy_grad.__func__
     }
 
 class LrDecays:
@@ -111,6 +132,7 @@ class Network:
         self.screen = None
         self.window_width = window_width
         self.window_height = window_height
+        self.loss_function = loss_function
         self.epoch = 0
         self.loss = 1 # should be updated in the training loop
 
