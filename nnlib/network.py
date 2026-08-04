@@ -134,7 +134,7 @@ class Network:
         self.window_width = window_width
         self.window_height = window_height
         self.loss_function = loss_function
-        self.epoch = 0
+        self.epoch = -1 # otherwise this epoch will always be one higher then the one of the training loop
         self.loss = 1 # should be updated in the training loop
 
     def add(self, layer):
@@ -222,6 +222,6 @@ class Network:
                     color = (0, 134, 212)
                 end_y = (self.window_height / 2) - (node_gap * (self.output_size - 1 / 2)) + (p * node_gap)
                 pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
-        text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss}", True, (255, 255, 255))
+        text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss:.6f}", True, (255, 255, 255))
         self.screen.blit(text, (self.window_width / 2 - text.get_width() / 2, (vert_side_offset - text.get_height()) / 2))
         pygame.display.update()
