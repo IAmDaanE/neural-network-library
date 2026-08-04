@@ -130,12 +130,12 @@ class Network:
         self.window_width = window_width
         self.window_height = window_height
         self.screen = None
+        self.font = None
         self.window_width = window_width
         self.window_height = window_height
         self.loss_function = loss_function
         self.epoch = 0
         self.loss = 1 # should be updated in the training loop
-        self.font = pygame.font.Font(None, 32)
 
     def add(self, layer):
         self.layers.append(layer)
@@ -160,6 +160,7 @@ class Network:
         if not self.screen:
             pygame.init()
             self.screen = pygame.display.set_mode((self.window_width, self.window_height))
+            self.font = pygame.font.Font(None, 32)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
