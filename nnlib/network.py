@@ -106,7 +106,7 @@ class Network:
                 return 
         self.screen.fill((0,0,0))
         hor_side_offset = 40
-        vert_side_offset = 15
+        vert_side_offset = 0
         hor_gap = (self.window_width - 2 * hor_side_offset) / (self.hidden_amount + 1)
         biggest_node_amount = max(self.input_size, self.hidden_size, self.output_size)
         node_gap = (self.window_height - 2 * vert_side_offset) / (biggest_node_amount + 1)
