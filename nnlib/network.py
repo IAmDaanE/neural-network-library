@@ -106,58 +106,58 @@ class Network:
                 return 
         self.screen.fill((0,0,0))
         hor_side_offset = 40
-        vert_side_offset = 0
+        vert_side_offset = 60
         hor_gap = (self.window_width - 2 * hor_side_offset) / (self.hidden_amount + 1)
         biggest_node_amount = max(self.input_size, self.hidden_size, self.output_size)
         node_gap = (self.window_height - 2 * vert_side_offset) / (biggest_node_amount + 1)
         node_radius = 8
         for i in range(self.input_size):
-            y = self.window_height / 2 - node_gap * (self.input_size / 2) + i * node_gap
+            y = (self.window_height / 2) - (node_gap * (self.input_size - 1 / 2)) + (i * node_gap)
             pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset, y), node_radius, 3)
         for q in range(self.hidden_amount):
             for i in range(self.hidden_size):
-                y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + i * node_gap
+                y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (i * node_gap)
                 pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset + hor_gap * (q + 1), y), node_radius, 3)
         for i in range(self.output_size):
-            y = self.window_height / 2 - node_gap * (self.output_size / 2) + i * node_gap
+            y = (self.window_height / 2) - (node_gap * (self.output_size - 1 / 2)) + (i * node_gap)
             pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset + (self.hidden_amount + 1) * hor_gap, y), node_radius, 3)
         for q in range(self.hidden_amount):
             if q == 0:
                 start_x = hor_side_offset
                 end_x = hor_side_offset + hor_gap
                 for i in range(self.input_size):
-                    start_y = self.window_height / 2 - node_gap * (self.input_size / 2) + i * node_gap
+                    start_y = (self.window_height / 2) - (node_gap * (self.input_size - 1 / 2)) + (i * node_gap)
                     for p in range(self.hidden_size):
                         weight = self.layers[q].weights[i, p]
                         if weight > 0:
                             color = (255, 255, 255)
                         else:
                             color = (0, 134, 212)
-                        end_y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + p * node_gap
+                        end_y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (p * node_gap)
                         pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
             else:
                 start_x = hor_side_offset + q * hor_gap
                 end_x = hor_side_offset + (q + 1) * hor_gap
                 for i in range(self.hidden_size):
-                    start_y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + i * node_gap
+                    start_y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (i * node_gap)
                     for p in range(self.hidden_size):
                         weight = self.layers[q].weights[i, p]
                         if weight > 0:
                             color = (255, 255, 255)
                         else:
                             color = (0, 134, 212)
-                        end_y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + p * node_gap
+                        end_y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (p * node_gap)
                         pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
         for q in range(self.hidden_size):
             start_x = hor_side_offset + hor_gap * (self.hidden_amount)
             end_x = hor_side_offset + hor_gap * (self.hidden_amount + 1)
-            start_y = self.window_height / 2 - node_gap * (self.hidden_size / 2) + q * node_gap
+            start_y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (q * node_gap)
             for p in range(self.output_size):
                 weight = self.layers[self.hidden_amount].weights[q, p]
                 if weight > 0:
                     color = (255, 255, 255)
                 else:
                     color = (0, 134, 212)
-                end_y = self.window_height / 2 - node_gap * (self.output_size / 2) + p * node_gap
+                end_y = (self.window_height / 2) - (node_gap * (self.hidden_size - 1 / 2)) + (p * node_gap)
                 pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
         pygame.display.update()
