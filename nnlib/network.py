@@ -33,7 +33,6 @@ class Losses:
 class Layer:
     def __init__(self, n_in, n_out, activation):
         self.weights = np.random.randn(n_in, n_out) * 0.1
-        #self.weights = np.ones((n_in, n_out)) * 0.1
         self.biases = np.zeros((1, n_out))
         self.activation = activation
 
