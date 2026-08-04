@@ -135,6 +135,7 @@ class Network:
         self.loss_function = loss_function
         self.epoch = 0
         self.loss = 1 # should be updated in the training loop
+        self.font = pygame.font.Font(None, 32)
 
     def add(self, layer):
         self.layers.append(layer)
