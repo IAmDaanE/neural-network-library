@@ -93,6 +93,10 @@ class LrDecays:
         lr = min_lr + (start_lr - min_lr) * cosine_out
         return lr
 
+    @staticmethod
+    def inverse_time_decay(initial_lr, decay_rate, current_epoch, min_lr):
+        return max(min_lr, initial_lr / (1.0 + decay_rate * current_epoch))
+
 class Layer:
     def __init__(self, n_in, n_out, activation):
         self.weights = np.random.randn(n_in, n_out) * 0.1
