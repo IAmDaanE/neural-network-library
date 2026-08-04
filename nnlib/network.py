@@ -53,7 +53,7 @@ class Layer:
         self.biases -= learning_rate * self.bias_gradient
 
 class Network:
-    def __init__(self, loss_function=0, input_size=0, hidden_size=0, hidden_amount=0, output_size=0, window_width=0, window_height=0):
+    def __init__(self, loss_function=Losses().mse, input_size=0, hidden_size=0, hidden_amount=0, output_size=0, window_width=0, window_height=0):
         self.layers = []
         self.loss_function = loss_function
         self.num_layers = 0
@@ -72,12 +72,6 @@ class Network:
         self.window_height = window_height
 
     def add(self, layer):
-        if self.num_layers == 0:
-            self.input_size = layer.n_out
-        self.output_size = layer.n_out
-        self.cached_hidden_layer_size = layer.n_out
-        self.hidden_layer_size = layer.n_out
-        self.num_layers += 1
         self.layers.append(layer)
 
     def forward(self, inputs):
