@@ -52,9 +52,25 @@ class Losses:
         prediction = np.clip(prediction, 1e-15, 1.0 - 1.0e-15)
         return (-true_value / prediction) / prediction.shape[0]
 
+    @staticmethod
+    def softmax_cross_entropy(prediction, true_value):
+        shift_logits = prediction - np.max(prediction, axis=-1, keepdims=True)
+        exps = np.exp(shift_logits)
+        softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
+        softmax_output = np.clip(softmax_output, 1e-15, 1.0 - 1.0e-15)
+        return -np.sum(true_value * np.log(softmax_output)) / prediction.shape[0]
+
+    @staticmethod
+    def softmax_cross_entropy_grad(prediction, true_value):
+        shift_logits = prediction - np.max(prediction, axis=-1, keepdims=True)
+        exps = np.exp(shift_logits)
+        softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
+        return (softmax_output - true_value) / prediction.shape[0]
+
     gradient_map = {
         mse.__func__: mse_grad.__func__,
-        cross_entropy.__func__: cross_entropy_grad.__func__
+        cross_entropy.__func__: cross_entropy_grad.__func__,
+        softmax_cross_entropy.__func__: softmax_cross_entropy_grad.__func__
     }
 
 class LrDecays:
@@ -139,7 +155,8 @@ class Network:
         self.window_height = window_height
         self.loss_function = loss_function
         self.epoch = -1 # otherwise this epoch will always be one higher then the one of the training loop
-        self.loss = 1 # should be updated in the training loop
+        self.loss = 0 # should be updated in the training loop, just for visualization
+        self.current_lr = 0 # should be updated in the training loop, just for visualization
 
     def add(self, layer):
         self.layers.append(layer)
@@ -226,6 +243,6 @@ class Network:
                     color = (0, 134, 212)
                 end_y = (self.window_height / 2) - (node_gap * (self.output_size - 1 / 2)) + (p * node_gap)
                 pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
-        text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss:.6f}", True, (255, 255, 255))
+        text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss:.6f} | lr: {self.current_lr:.4f}", True, (255, 255, 255))
         self.screen.blit(text, (self.window_width / 2 - text.get_width() / 2, (vert_side_offset - text.get_height()) / 2))
         pygame.display.update()
