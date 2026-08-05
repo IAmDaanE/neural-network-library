@@ -13,7 +13,7 @@ This library was developed to understand the inner workings of backpropagation, 
 - **Real-Time Pygame Visualization**: Dynamic monitoring of nodes, active weights, and real-time loss tracking during training epochs.
 - **Modular Learning Rate Decays**: Built-in learning rate schedulers including `Exponential Decay` and `Inverse Time Decay`.
 ---
-##visualization
+## visualization
 <img width="1892" height="981" alt="image" src="https://github.com/user-attachments/assets/7bfa06eb-cfa9-4582-850a-6be700d1a83e" />
 ---
 
