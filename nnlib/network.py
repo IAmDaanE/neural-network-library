@@ -163,6 +163,7 @@ class Network:
         self.epoch = 0 # should be updated in the training loop, just for visualization
         self.loss = 0 # should be updated in the training loop, just for visualization
         self.current_lr = 0 # should be updated in the training loop, just for visualization
+        self.loss_function = loss_function
 
     def add(self, layer):
         self.layers.append(layer)
