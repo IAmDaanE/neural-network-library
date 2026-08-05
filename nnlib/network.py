@@ -54,27 +54,26 @@ class Losses:
 
     @staticmethod
     def softmax_cross_entropy(prediction_logits, true_value):
-        num_samples = prediction_logits.shape[0]
+        m = prediction_logits.shape[0]
         shift_logits = prediction_logits - np.max(prediction_logits, axis=-1, keepdims=True)
         exps = np.exp(shift_logits)
         softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
         softmax_output = np.clip(softmax_output, 1e-15, 1.0 - 1.0e-15)
-        loss_sum = -np.sum(true_value * np.log(softmax_output))
-        return loss_sum / num_samples
-
+        loss = -np.sum(true_value * np.log(softmax_output)) / m
+        return loss
 
     @staticmethod
     def softmax_cross_entropy_grad(prediction_logits, true_value):
-        num_samples = prediction_logits.shape[0]
+        m = prediction_logits.shape[0]
         shift_logits = prediction_logits - np.max(prediction_logits, axis=-1, keepdims=True)
         exps = np.exp(shift_logits)
         softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
-        return (softmax_output - true_value) / num_samples
+        return (softmax_output - true_value) / m
 
     gradient_map = {
+        softmax_cross_entropy.__func__: softmax_cross_entropy_grad.__func__,
         mse.__func__: mse_grad.__func__,
-        cross_entropy.__func__: cross_entropy_grad.__func__,
-        softmax_cross_entropy.__func__: softmax_cross_entropy_grad.__func__
+        cross_entropy.__func__: cross_entropy_grad.__func__
     }
 
 class LrDecays:
@@ -152,11 +151,13 @@ class Layer:
         return self.activation(self.pre_activation)
 
     def backward(self, incoming_gradient):
-        activation_gradient = Activations().gradient_map[self.activation](self.pre_activation)
+        activation_grad_func = Activations.gradient_map[self.activation]
+        activation_gradient = activation_grad_func(self.pre_activation)
         gradient_after_activation = incoming_gradient * activation_gradient
         self.weight_gradient = self.cached_inputs.T @ gradient_after_activation
         self.bias_gradient = np.sum(gradient_after_activation, axis=0, keepdims=True)
         return gradient_after_activation @ self.weights.T
+
 
     def update(self, learning_rate):
         self.weights -= learning_rate * self.weight_gradient
@@ -187,7 +188,8 @@ class Network:
         return output
 
     def backward(self, prediction, true_value):
-        gradient = Losses().gradient_map[self.loss_function](prediction, true_value)
+        loss_grad_func = Losses.gradient_map[self.loss_function]
+        gradient = loss_grad_func(prediction, true_value)
         for layer in reversed(self.layers):
             gradient = layer.backward(gradient)
 
