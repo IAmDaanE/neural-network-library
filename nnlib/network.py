@@ -154,7 +154,7 @@ class Network:
         self.window_width = window_width
         self.window_height = window_height
         self.loss_function = loss_function
-        self.epoch = -1 # otherwise this epoch will always be one higher then the one of the training loop
+        self.epoch = 0 # should be updated in the training loop, just for visualization
         self.loss = 0 # should be updated in the training loop, just for visualization
         self.current_lr = 0 # should be updated in the training loop, just for visualization
 
@@ -162,7 +162,6 @@ class Network:
         self.layers.append(layer)
 
     def forward(self, inputs):
-        self.epoch += 1
         output = inputs
         for layer in self.layers:
             output = layer.forward(output)
@@ -195,14 +194,14 @@ class Network:
         node_gap = (self.window_height - 2 * vert_side_offset) / (biggest_node_amount + 1)
         node_radius = 8
         for i in range(self.input_size):
-            y = (self.window_height / 2) - (node_gap * (self.input_size - 1 / 2)) + (i * node_gap)
+            y = (self.window_height / 2) - (node_gap * ((self.input_size - 1) / 2)) + (i * node_gap)
             pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset, y), node_radius, 3)
         for q in range(self.hidden_amount):
             for i in range(self.hidden_size):
                 y = (self.window_height / 2) - (node_gap * ((self.hidden_size - 1) / 2)) + (i * node_gap)
                 pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset + hor_gap * (q + 1), y), node_radius, 3)
         for i in range(self.output_size):
-            y = (self.window_height / 2) - (node_gap * (self.output_size - 1 / 2)) + (i * node_gap)
+            y = (self.window_height / 2) - (node_gap * ((self.output_size - 1) / 2)) + (i * node_gap)
             pygame.draw.circle(self.screen, (255,255,255), (hor_side_offset + (self.hidden_amount + 1) * hor_gap, y), node_radius, 3)
         for q in range(self.hidden_amount):
             if q == 0:
