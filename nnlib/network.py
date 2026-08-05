@@ -181,11 +181,6 @@ class Network:
             pygame.init()
             self.screen = pygame.display.set_mode((self.window_width, self.window_height))
             self.font = pygame.font.Font(None, 32)
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                self.screen = None
-                return 
         self.screen.fill((0,0,0))
         hor_side_offset = 40
         vert_side_offset = 60
@@ -208,7 +203,7 @@ class Network:
                 start_x = hor_side_offset
                 end_x = hor_side_offset + hor_gap
                 for i in range(self.input_size):
-                    start_y = (self.window_height / 2) - (node_gap * (self.input_size - 1 / 2)) + (i * node_gap)
+                    start_y = (self.window_height / 2) - (node_gap * ((self.input_size - 1) / 2)) + (i * node_gap)
                     for p in range(self.hidden_size):
                         weight = self.layers[q].weights[i, p]
                         if weight > 0:
@@ -245,3 +240,10 @@ class Network:
         text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss:.6f} | lr: {self.current_lr:.4f}", True, (255, 255, 255))
         self.screen.blit(text, (self.window_width / 2 - text.get_width() / 2, (vert_side_offset - text.get_height()) / 2))
         pygame.display.update()
+
+    def check_pygame_events(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                self.screen = None
+                return 
