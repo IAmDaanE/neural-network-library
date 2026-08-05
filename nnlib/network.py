@@ -151,7 +151,7 @@ class Layer:
         self.biases -= learning_rate * self.bias_gradient
 
 class Network:
-    def __init__(self):
+    def __init__(self, loss_function):
         self.layers = []
         self.num_layers = 0
         self.input_size = 0
