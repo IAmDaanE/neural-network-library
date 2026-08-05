@@ -53,19 +53,21 @@ class Losses:
         return (-true_value / prediction) / prediction.shape[0]
 
     @staticmethod
-    def softmax_cross_entropy(prediction, true_value):
-        shift_logits = prediction - np.max(prediction, axis=-1, keepdims=True)
+    def softmax_cross_entropy(prediction_logits, true_value):
+        batch_size = prediction_logits.shape[0]
+        shift_logits = prediction_logits - np.max(prediction_logits, axis=-1, keepdims=True)
         exps = np.exp(shift_logits)
         softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
         softmax_output = np.clip(softmax_output, 1e-15, 1.0 - 1.0e-15)
-        return -np.sum(true_value * np.log(softmax_output)) / prediction.shape[0]
+        return -np.sum(true_value * np.log(softmax_output)) / batch_size
 
     @staticmethod
-    def softmax_cross_entropy_grad(prediction, true_value):
-        shift_logits = prediction - np.max(prediction, axis=-1, keepdims=True)
+    def softmax_cross_entropy_grad(prediction_logits, true_value):
+        batch_size = prediction_logits.shape[0]
+        shift_logits = prediction_logits - np.max(prediction_logits, axis=-1, keepdims=True)
         exps = np.exp(shift_logits)
         softmax_output = exps / np.sum(exps, axis=-1, keepdims=True)
-        return (softmax_output - true_value) / prediction.shape[0]
+        return (softmax_output - true_value) / batch_size
 
     gradient_map = {
         mse.__func__: mse_grad.__func__,
@@ -113,9 +115,22 @@ class LrDecays:
     def inverse_time_decay(initial_lr, decay_rate, current_epoch, min_lr):
         return max(min_lr, initial_lr / (1.0 + decay_rate * current_epoch))
 
+class WeightInitializers:
+    @staticmethod
+    def he(n_in, n_out): # goed voor relu
+        return np.random.randn(n_in, n_out) * np.sqrt(2.0 / n_in)
+
+    @staticmethod
+    def xavier(n_in, n_out): # goed voor tanh of sigmoid
+        return np.random.randn(n_in, n_out) * np.sqrt(1.0 / n_in)
+
+    @staticmethod
+    def random_small(n_in, n_out): # algemeen
+        return np.random.randn(n_in, n_out) * 0.01
+
 class Layer:
-    def __init__(self, n_in, n_out, activation):
-        self.weights = np.random.randn(n_in, n_out) * 0.1
+    def __init__(self, n_in, n_out, activation, initializer):
+        self.weights = initializer(n_in, n_out)
         self.biases = np.zeros((1, n_out))
         self.activation = activation
 
@@ -176,7 +191,7 @@ class Network:
         for layer in self.layers:
             layer.update(learning_rate)
 
-    def visualize(self):
+    def visualize(self, input_size, hidden_size, hidden_amount, output_size, window_width, window_height):
         if not self.screen:
             pygame.init()
             self.screen = pygame.display.set_mode((self.window_width, self.window_height))
