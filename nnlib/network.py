@@ -263,7 +263,7 @@ class Network:
                     color = (255, 255, 255)
                 else:
                     color = (0, 134, 212)
-                end_y = (window_height / 2) - (output_node_gap * (output_size - 1 / 2)) + (p * output_node_gap)
+                end_y = (window_height / 2) - (output_node_gap * ((output_size - 1) / 2)) + (p * output_node_gap)
                 pygame.draw.line(self.screen, color, (start_x, start_y), (end_x, end_y), max(1, int(abs(weight) * 7)))
         text = self.font.render(f"epoch: {self.epoch} | loss: {self.loss:.6f} | lr: {self.current_lr:.4f}", True, (255, 255, 255))
         self.screen.blit(text, (window_width / 2 - text.get_width() / 2, (vert_side_offset - text.get_height()) / 2))
