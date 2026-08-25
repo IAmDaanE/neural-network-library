@@ -15,8 +15,7 @@ This library was developed to understand the inner workings of backpropagation, 
 ---
 ## visualization
 <img width="1892" height="981" alt="image" src="https://github.com/user-attachments/assets/7bfa06eb-cfa9-4582-850a-6be700d1a83e" />
----
 
 ## 📝 License
 
-This project is open-source and available under the [MIT License](LICENSE). Feel free to use it to learn, hack, and expand your understanding of Neural Networks!
+This project is open-source and available under the [MIT License](LICENSE).
