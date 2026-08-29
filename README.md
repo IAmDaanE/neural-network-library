@@ -1,21 +1,40 @@
-# Custom Neural Network Library from Scratch
+# Custom Neural Network and Machine Learning Library
 
-A lightweight, object-oriented Deep Learning library built entirely from scratch in Python using only **NumPy** and **Pygame**. 
+My own homemade neural network library written in python using just NumPy.
 
-This library was developed to understand the inner workings of backpropagation, matrix-driven neural layers, gradient descent, and real-time network visualization without relying on high-level frameworks like PyTorch or TensorFlow.
-
-## 🚀 Features
-
-- **Matrix-Driven Layers**: Fully connected layout using optimized NumPy `@` matrix multiplication for fast batch processing.
-- **Dynamic Weight Initializers**: Built-in implementations for **He (Kaiming)** and **Xavier (Glorot)** initialization to ensure training stability and prevent exploding/vanishing gradients.
-- **Flexible Activations**: Built-in support for `ReLU`, `Linear`, and `Sigmoid` activations along with their respective exact gradient maps.
-- **Stable Loss Functions**: Features numerical adjustments like Logit-shifting and clipping to provide rock-solid `Softmax Cross-Entropy` and `MSE` calculations.
-- **Real-Time Pygame Visualization**: Dynamic monitoring of nodes, active weights, and real-time loss tracking during training epochs.
-- **Modular Learning Rate Decays**: Built-in learning rate schedulers including `Exponential Decay` and `Inverse Time Decay`.
 ---
-## visualization
+
 <img width="1892" height="981" alt="image" src="https://github.com/user-attachments/assets/7bfa06eb-cfa9-4582-850a-6be700d1a83e" />
 
-## 📝 License
 
-This project is open-source and available under the [MIT License](LICENSE).
+*the visualization window*
+
+## About the Project
+
+It contains Loss functions, Activation functions, Learning Rate decay functions and multiple ways to initialize weights when creating the network. It also has a nice visualization function made with pygame where you can see the neural network and its weights changing as training progresses.
+
+## Getting Started
+
+### Getting the Source
+
+This project is [hosted on GitHub](https://github.com/IAmDaanE/neural-network-library). You can download the zip or clone this project directly using this command:
+
+```
+git clone git@github.com:IAmDaanE/neural-network-library.git
+```
+
+### Installation and Use
+
+**Requirements**: You must have Python 3.9 - 3.13.
+1. Run this command (preferably using a virtual environment):
+    ```
+    pip install git+https://github.com/IAmDaanE/neural-network-library.git@master
+    ```
+2. In the python file where you want to run it use:
+    ```
+    import nnlib_py as nn
+    ```
+
+## License
+
+This project is open-source and available under the MIT License.
