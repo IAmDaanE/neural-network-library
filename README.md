@@ -27,11 +27,11 @@ git clone git@github.com:IAmDaanE/neural-network-library.git
 
 **Requirements**: You must have Python 3.9 - 3.13.
 1. Run this command (preferably using a virtual environment):
-    ```
+    ```powershell
     pip install git+https://github.com/IAmDaanE/neural-network-library.git@master
     ```
 2. In the python file where you want to run it use:
-    ```
+    ```python
     import nnlib_py as nn
     ```
 
