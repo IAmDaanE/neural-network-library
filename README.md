@@ -4,8 +4,7 @@ My own homemade neural network library written in python using just NumPy.
 
 ---
 
-<img width="1892" height="981" alt="image" src="https://github.com/user-attachments/assets/7bfa06eb-cfa9-4582-850a-6be700d1a83e" />
-
+<img width="1199" height="774" alt="image" src="https://github.com/user-attachments/assets/35d24991-2286-46e1-a87f-78278507bdae" />
 
 *the visualization window*
 
